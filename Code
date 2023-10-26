@@ -5,52 +5,60 @@ import json
 
 version = 0
 
-def calculator():
-    # Function to add two numbers
-    def add(x, y):
-        return x + y
+# Function to display the Tic-Tac-Toe board
+def display_board(board):
+    for row in board:
+        print(" | ".join(row))
+        print("-" * 9)
 
-    # Function to subtract two numbers
-    def subtract(x, y):
-        return x - y
+# Function to check for a win
+def check_win(board, player):
+    for row in board:
+        if all([cell == player for cell in row]):
+            return True
 
-    # Function to multiply two numbers
-    def multiply(x, y):
-        return x * y
+    for col in range(3):
+        if all([board[row][col] == player for row in range(3)]):
+            return True
 
-    # Function to divide two numbers
-    def divide(x, y):
-        if y == 0:
-            return "Cannot divide by zero"
-        return x / y
+    if all([board[i][i] == player for i in range(3)]) or all([board[i][2 - i] == player for i in range(3)]):
+        return True
 
-    # Main calculator loop
+    return False
+
+# Function to check for a tie
+def check_tie(board):
+    return all([cell != ' ' for row in board for cell in row])
+
+# Main game loop
+def play_game():
+    board = [[' ' for _ in range(3)] for _ in range(3)
+    ]
+    player = 'X'
+    moves = 0
+
     while True:
-        print("Options:")
-        print("Enter 'add' for addition")
-        print("Enter 'subtract' for subtraction")
-        print("Enter 'multiply' for multiplication")
-        print("Enter 'divide' for division")
-        print("Enter 'quit' to end the program")
+        display_board(board)
 
-        user_input = input(": ")
+        row, col = map(int, input(f"Player {player}, enter row (0-2) and column (0-2): ").split())
 
-        if user_input == "quit":
-            break
-        elif user_input in ["add", "subtract", "multiply", "divide"]:
-            num1 = float(input("Enter first number: "))
-            num2 = float(input("Enter second number: "))
+        if board[row][col] == ' ':
+            board[row][col] = player
+            moves += 1
 
-            if user_input == "add":
-                print("Result: ", add(num1, num2))
-            elif user_input == "subtract":
-                print("Result: ", subtract(num1, num2))
-            elif user_input == "multiply":
-                print("Result: ", multiply(num1, num2))
-            elif user_input == "divide":
-                print("Result: ", divide(num1, num2))
+            if check_win(board, player):
+                display_board(board)
+                print(f"Player {player} wins!")
+                break
+
+            if check_tie(board):
+                display_board(board)
+                print("It's a tie!")
+                break
+
+            player = 'O' if player == 'X' else 'X'
         else:
-            print("Invalid input. Please try again.")
+            print("Invalid move. Try again.")
 
 
 
@@ -65,8 +73,9 @@ def update():
     file = open("config.json", "r")
     data = file.read()
     file.close()
-    access_token = json.dumps(data)
-    access_token = access_token["key"]
+    
+    data = json.loads(data)
+    access_token = data["key"]
     
 
     # Create a GitHub instance with your access token.

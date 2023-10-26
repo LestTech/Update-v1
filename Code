@@ -1,1 +1,103 @@
-print()
+from github import Github
+import json
+
+
+
+version = 1
+
+def calculator():
+    # Function to add two numbers
+    def add(x, y):
+        return x + y
+
+    # Function to subtract two numbers
+    def subtract(x, y):
+        return x - y
+
+    # Function to multiply two numbers
+    def multiply(x, y):
+        return x * y
+
+    # Function to divide two numbers
+    def divide(x, y):
+        if y == 0:
+            return "Cannot divide by zero"
+        return x / y
+
+    # Main calculator loop
+    while True:
+        print("Options:")
+        print("Enter 'add' for addition")
+        print("Enter 'subtract' for subtraction")
+        print("Enter 'multiply' for multiplication")
+        print("Enter 'divide' for division")
+        print("Enter 'quit' to end the program")
+
+        user_input = input(": ")
+
+        if user_input == "quit":
+            break
+        elif user_input in ["add", "subtract", "multiply", "divide"]:
+            num1 = float(input("Enter first number: "))
+            num2 = float(input("Enter second number: "))
+
+            if user_input == "add":
+                print("Result: ", add(num1, num2))
+            elif user_input == "subtract":
+                print("Result: ", subtract(num1, num2))
+            elif user_input == "multiply":
+                print("Result: ", multiply(num1, num2))
+            elif user_input == "divide":
+                print("Result: ", divide(num1, num2))
+        else:
+            print("Invalid input. Please try again.")
+
+
+
+
+
+
+def update():
+
+    # Replace these variables with your GitHub username, repository, and access token.
+    github_username = 'LestTech'
+    repository_name = 'Update-v1'
+    file = open("config.json", "r")
+    data = file.read()
+    file.close()
+    
+    data = json.loads(data)
+    access_token = data["key"]
+    
+
+    # Create a GitHub instance with your access token.
+    g = Github(access_token)
+
+    # Get the repository object.
+    repo = g.get_user(github_username).get_repo(repository_name)
+
+    # Define the path to the file you want to access.
+    file_path = 'Code'
+
+    try:
+        # Get the file contents.
+        file_content = repo.get_contents(file_path)
+
+        # Decode the content from base64 to get the actual file content.
+        decoded_content = file_content.decoded_content.decode('utf-8')
+
+        # Print the file content.
+        newCode = decoded_content
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
+    file = open(f"Calculator v{version+1}.py", "a")
+    for line in newCode.splitlines():
+        file.write(f"{line}\n")
+    file.close()
+    
+
+
+
+
+update()

@@ -1,4 +1,6 @@
 from github import Github
+import json
+
 
 
 version = 0
@@ -24,11 +26,14 @@ def calculator():
 
     # Main calculator loop
     while True:
-        print("fuck calculators")
+        print("Options:")
+        print("Enter 'add' for addition")
+        print("Enter 'subtract' for subtraction")
+        print("Enter 'multiply' for multiplication")
+        print("Enter 'divide' for division")
+        print("Enter 'quit' to end the program")
 
-        
-
-        user_input = input()
+        user_input = input(": ")
 
         if user_input == "quit":
             break
@@ -57,7 +62,12 @@ def update():
     # Replace these variables with your GitHub username, repository, and access token.
     github_username = 'LestTech'
     repository_name = 'Update-v1'
-    access_token = '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'  # Create a personal access token in your GitHub account.
+    file = open("config.json", "r")
+    data = file.read()
+    file.close()
+    access_token = json.dumps(data)
+    access_token = access_token["key"]
+    
 
     # Create a GitHub instance with your access token.
     g = Github(access_token)
@@ -80,8 +90,27 @@ def update():
     except Exception as e:
         print(f"An error occurred: {e}")
 
-    file = open(f"Calculator v{version+1}", "a")
+    file = open(f"Calculator v{version+1}.py", "a")
     for line in newCode.splitlines():
-        file.write(line)
+        file.write(f"{line}\n")
     file.close()
     
+
+
+def decision():
+    print("""
+    1 - calculator
+    2 - update
+    """)
+
+    choice = input(":")
+
+    if choice == "1":
+        calculator()
+    else:
+        update()
+
+
+
+
+update()

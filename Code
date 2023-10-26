@@ -29,9 +29,7 @@ def calculator():
         print("Options:")
         print("Enter 'add' for addition")
         print("Enter 'subtract' for subtraction")
-        print("Enter 'multiply' for multiplication")
-        print("Enter 'divide' for division")
-        print("Enter 'quit' to end the program")
+
 
         user_input = input(": ")
 

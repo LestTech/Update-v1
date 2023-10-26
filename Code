@@ -57,7 +57,7 @@ def update():
     # Replace these variables with your GitHub username, repository, and access token.
     github_username = 'LestTech'
     repository_name = 'Update-v1'
-    access_token = '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'  # Create a personal access token in your GitHub account.
+    access_token = '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'  # Create a personal access token in your GitHub account.
 
     # Create a GitHub instance with your access token.
     g = Github(access_token)
